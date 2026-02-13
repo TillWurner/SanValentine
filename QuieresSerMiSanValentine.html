@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>San Valentín 💘</title>
+
+<style>
+body{
+  margin:0;
+  background:#e9d9c8; /* COLOR EXACTO DE LA FOTO */
+  font-family: Arial, Helvetica, sans-serif;
+  overflow:hidden;
+}
+
+.container{
+  width:100%;
+  height:100vh;
+  position:relative;
+}
+
+
+/* TEXTO */
+.text{
+  position:absolute;
+  left:80px;
+  top:120px;
+  width:420px;
+  font-size:16px;   /* antes 22 */
+  color:#4a4a4a;
+  line-height:1.7;  /* más elegante */
+}
+
+.counter{
+  position:absolute;
+  bottom:30px;
+  left:80px;
+  font-size:16px;      /* 🔽 más pequeño */
+  color:#4a4a4a;
+  line-height:1.6;
+}
+
+
+
+/* ARBOL */
+.tree{
+  position:absolute;
+  right:140px;
+  bottom:0;
+  width:420px;
+  height:520px;
+}
+.scene1{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transition:1s;
+}
+
+.scene1.hide{
+  opacity:0;
+  pointer-events:none;
+}
+
+
+.trunk{
+  position:absolute;
+  bottom:0;
+  left:195px;
+  width:40px;
+  height:170px;
+  background:linear-gradient(to right,#157a6e,#1f9d8a,#157a6e);
+  border-radius:20px;
+  z-index:1;
+}
+
+/* RAMAS */
+.branch{
+  position:absolute;
+  background:linear-gradient(to right,#157a6e,#1f9d8a,#157a6e);
+  border-radius:20px;
+  z-index:1;
+}
+
+.branch.left1{
+  width:18px;
+  height:90px;
+  bottom:120px;
+  left:175px;
+  transform:rotate(-35deg);
+}
+
+.branch.right1{
+  width:18px;
+  height:90px;
+  bottom:120px;
+  left:235px;
+  transform:rotate(35deg);
+}
+
+.branch.left2{
+  width:14px;
+  height:70px;
+  bottom:160px;
+  left:170px;
+  transform:rotate(-55deg);
+}
+
+.branch.right2{
+  width:14px;
+  height:70px;
+  bottom:160px;
+  left:250px;
+  transform:rotate(55deg);
+}
+
+
+/* AREA CORAZONES */
+.heart-cloud{
+  position:absolute;
+  bottom:130px;
+  left:20px;
+  width:380px;
+  height:340px;
+  z-index:5; /* ENCIMA DEL TRONCO */
+}
+
+/* CORAZONES */
+.heart{
+  position:absolute;
+  width:12px;
+  height:12px;
+  transform:rotate(45deg);
+  z-index:6;
+}
+
+
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width:12px;
+  height:12px;
+  background:inherit;
+  border-radius:50%;
+}
+.heart::before{ top:-6px; left:0;}
+.heart::after{ left:-6px; top:0;}
+
+.fall{
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  0%{ transform:translateY(0) rotate(45deg); opacity:1;}
+  100%{ transform:translateY(600px) rotate(45deg); opacity:0;}
+}
+
+/* ESCENA 2 */
+.scene2{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#e9d9c8;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:1s;
+}
+
+.scene2.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.question{
+  font-size:42px;
+  color:#333;
+  margin-bottom:40px;
+}
+
+.buttons{
+  display:flex;
+  gap:30px;
+}
+
+button{
+  padding:18px 40px;
+  font-size:24px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.yes{background:#ff4d6d;color:white;}
+.no{background:#444;color:white;position:relative;}
+
+.final{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:50px;
+  background:#e9d9c8;
+  opacity:0;
+  transition:1s;
+  pointer-events:none;   /* 🔥 ESTO ES LA CLAVE */
+}
+
+.final.show{
+  opacity:1;
+  pointer-events:auto;   /* solo cuando aparece */
+}
+
+
+/* POPUP */
+.popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+  z-index:999;
+}
+
+.popup.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.popup-box{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  text-align:center;
+  width:320px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.2);
+}
+
+.popup-box h2{
+  margin-bottom:15px;
+  color:#333;
+}
+
+.popup-box img{
+  width:100%;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.closeBtn{
+  margin-top:18px;
+  padding:10px 20px;
+  border:none;
+  background:#ff4d6d;
+  color:white;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+</style>
+
+
+</head>
+
+<body>
+<div class="container">
+
+<div class="scene1" id="scene1">
+
+<div class="text" id="text"></div>
+<div class="counter" id="counter"></div>
+
+<div class="tree">
+
+  <div class="trunk"></div>
+
+  <!-- ramas -->
+  <div class="branch left1"></div>
+  <div class="branch right1"></div>
+  <div class="branch left2"></div>
+  <div class="branch right2"></div>
+
+  <!-- corazones -->
+  <div class="heart-cloud" id="heartCloud"></div>
+</div> <!-- tree -->
+</div> <!-- scene1 -->
+
+
+
+<div class="scene2" id="scene2">
+  <div class="question">¿Quieres ser mi San Valentín? 💘</div>
+  <div class="buttons">
+    <button class="yes" onclick="yesClick()">SÍ 💖</button>
+    <button class="no" id="noBtn">NO 😈</button>
+  </div>
+</div>
+
+<div class="final" id="final">
+  Te espero el 14..... 
+</div>
+<!-- POPUP SI -->
+<div class="popup" id="popupYes">
+  <div class="popup-box">
+    <h2>Ya sabía que dirías que sí 😎</h2>
+    <!-- AQUI PONES TU FOTO -->
+    <img src="img/mono.jpg" alt="">
+    <br>
+    <button class="closeBtn" onclick="closeYes()">Cerrar</button>
+  </div>
+</div>
+
+<!-- POPUP NO -->
+<div class="popup" id="popupNo">
+  <div class="popup-box">
+    <h2>¿Chistosita no? 
+    <img src="img/no.jpg" alt="">
+    <br>
+    <br>Vuelve a Intentarlo 😡</h2>
+
+    <button class="closeBtn" onclick="closeNo()">Cerrar</button>
+  </div>
+</div>
+
+
+</div>
+
+<script>
+// TEXTO
+const message=`Para Paula, la dueña de mi sonrisa:
+
+Desde que nos conocimos
+todo se siente diferente…
+más bonito, más tranquilo,
+más feliz.
+
+Me encanta cuando te ríes sin parar,
+cuando reniegas por cosas que no controlas,
+cuando me miras con esos ojos
+que me desarman por completo.
+
+Tu sonrisa es de mis cosas favoritas,
+y cada momento contigo
+se vuelve un recuerdo que quiero guardar.
+
+Con el tiempo me di cuenta
+que mi lugar favorito
+siempre termina siendo a tu lado.
+`;
+
+
+
+let i=0;
+function type(){
+ if(i < message.length){
+
+  let char = message[i];
+
+  // si encuentra salto de línea real
+  if(char === "\n"){
+    document.getElementById("text").innerHTML += "<br>";
+  }else{
+    document.getElementById("text").innerHTML += char;
+  }
+
+  i++;
+  setTimeout(type,35);
+
+ }else{
+   // tiempo extra antes de pasar a escena 2
+   setTimeout(showScene2,1000);  //CAMBIAR DESPUES 8000
+ }
+}
+
+type();
+
+
+// CONTADOR HACIA SAN VALENTÍN
+setInterval(()=>{
+
+ const now = new Date();
+
+ // 👉 siguiente 14 de febrero
+ let target = new Date(now.getFullYear(), 1, 14, 0, 0, 0);
+
+ // si ya pasó este año → usar el siguiente
+ if(now > target){
+   target = new Date(now.getFullYear()+1, 1, 14, 0, 0, 0);
+ }
+
+ const diff = target - now;
+
+ const d = Math.floor(diff/86400000);
+ const h = Math.floor(diff/3600000)%24;
+ const m = Math.floor(diff/60000)%60;
+ const s = Math.floor(diff/1000)%60;
+
+ document.getElementById("counter").innerHTML =
+ `<br>Dias restantes para San Valentín💘:<br>
+ ${d} días ${h} horas ${m} minutos ${s} segundos`;
+
+},1000);
+
+
+// COLORES IGUALES FOTO
+const colors=[
+"#ff6b81","#ff8fa3","#ff4d6d","#ffa94d",
+"#ffd43b","#f06595","#cc5de8","#f783ac",
+"#ff8787","#faa2c1","#ffd8a8","#ff922b"
+];
+
+// GENERAR NUBE DE CORAZONES (ARBOL REAL)
+function createHeart(x,y,fall=false){
+ const h=document.createElement("div");
+ h.className="heart";
+ h.style.left=x+"px";
+ h.style.top=y+"px";
+ h.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+ if(fall){
+  h.classList.add("fall");
+  h.style.animationDuration=(4+Math.random()*3)+"s";
+  setTimeout(()=>h.remove(),7000);
+ }
+
+ document.getElementById("heartCloud").appendChild(h);
+}
+
+// ========= ARBOL CORAZON PERFECTO GRANDE =========
+for(let i=0;i<2600;i++){
+
+  // tamaño del corazón (MAS GRANDE)
+  let x = (Math.random()*2-1)*1.5;
+  let y = (Math.random()*2-1)*1.5;
+
+  // ecuación corazón real
+  let formula = Math.pow(x*x + y*y - 1, 3) - x*x*y*y*y;
+
+  if(formula <= 0){
+
+    // ESCALA (tamaño general)
+    let scale = 230;
+
+    // POSICION — alineado al tronco
+    let posX = 190 + x*scale;
+    let posY = 200 - y*scale;
+
+    // separar un poco desde dentro
+    posX += (Math.random()-0.5)*14;
+    posY += (Math.random()-0.5)*14;
+
+    createHeart(posX, posY, false);
+  }
+}
+
+
+
+// PETALOS CAYENDO
+setInterval(()=>{
+ let x=Math.random()*360;
+ createHeart(x,-10,true);
+},180);
+
+// ESCENA 2
+function showScene2(){
+
+ // ocultar escena 1 (arbol)
+ document.getElementById("scene1").classList.add("hide");
+
+ // mostrar escena 2
+ setTimeout(()=>{
+   document.getElementById("scene2").classList.add("active");
+ },600);
+}
+
+
+// BOTON NO HUYE
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+ const x=Math.random()*600-300;
+ const y=Math.random()*300-150;
+ noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+noBtn.addEventListener("click",()=>{
+ document.getElementById("popupNo").classList.add("show");
+});
+
+
+// SI
+function yesClick(){
+ document.getElementById("popupYes").classList.add("show");
+}
+function closeYes(){
+ document.getElementById("popupYes").classList.remove("show");
+ document.getElementById("final").classList.add("show");
+}
+
+function closeNo(){
+ document.getElementById("popupNo").classList.remove("show");
+}
+
+
+</script>
+</body>
+</html>
